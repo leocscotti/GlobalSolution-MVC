@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GlobalSolution_MVC.Models
 {
-    [Table("AutoridadeAmbientalDenuncia")]
+    [Table("tb_autoridade_ambiental_denuncia")]
     public class AutoridadeAmbientalDenuncia
     {
         [Key]
@@ -11,12 +11,14 @@ namespace GlobalSolution_MVC.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AutoridadeDenunciaId { get; set; }
 
-        [ForeignKey("DenunciaId")]
-        public int DenunciaId { get; set; }
-        public Denuncia Denuncia { get; set; }
 
-        [ForeignKey("AutoridadeId")]
-        public int AutoridadeId { get; set; }
-        public AutoridadeAmbiental Autoridade { get; set; }
+        public int DenunciaId { get; set; }
+        public Denuncia? Denuncia { get; set; }
+
+
+        public int AutoridadeAmbientalId { get; set; }
+        public AutoridadeAmbiental? AutoridadeAmbiental { get; set; }
+
+
     }
 }

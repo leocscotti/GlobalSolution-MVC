@@ -10,22 +10,23 @@ using GlobalSolution_MVC.Persistencia;
 
 namespace GlobalSolution_MVC.Controllers
 {
-    public class AutoridadesAmbientaisController : Controller
+    public class NotificacoesController : Controller
     {
         private readonly VisionaryBlueDbContext _context;
 
-        public AutoridadesAmbientaisController(VisionaryBlueDbContext context)
+        public NotificacoesController(VisionaryBlueDbContext context)
         {
             _context = context;
         }
 
-        // GET: AutoridadesAmbientais
+        // GET: Notificacoes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.AutoridadesAmbientais.ToListAsync());
+            var visionaryBlueDbContext = _context.Notificacoes.Include(n => n.Comentario);
+            return View(await visionaryBlueDbContext.ToListAsync());
         }
 
-        // GET: AutoridadesAmbientais/Details/5
+        // GET: Notificacoes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +34,42 @@ namespace GlobalSolution_MVC.Controllers
                 return NotFound();
             }
 
-            var autoridadeAmbiental = await _context.AutoridadesAmbientais
-                .FirstOrDefaultAsync(m => m.AutoridadeAmbientalId == id);
-            if (autoridadeAmbiental == null)
+            var notificacao = await _context.Notificacoes
+                .Include(n => n.Comentario)
+                .FirstOrDefaultAsync(m => m.NotificacaoId == id);
+            if (notificacao == null)
             {
                 return NotFound();
             }
 
-            return View(autoridadeAmbiental);
+            return View(notificacao);
         }
 
-        // GET: AutoridadesAmbientais/Create
+        // GET: Notificacoes/Create
         public IActionResult Create()
         {
+            ViewData["ComentarioId"] = new SelectList(_context.Comentarios, "ComentarioId", "Descricao");
             return View();
         }
 
-        // POST: AutoridadesAmbientais/Create
+        // POST: Notificacoes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AutoridadeAmbientalId,Nome,Descricao")] AutoridadeAmbiental autoridadeAmbiental)
+        public async Task<IActionResult> Create([Bind("NotificacaoId,Descricao,Status,Tipo,ComentarioId")] Notificacao notificacao)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(autoridadeAmbiental);
+                _context.Add(notificacao);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(autoridadeAmbiental);
+            ViewData["ComentarioId"] = new SelectList(_context.Comentarios, "ComentarioId", "Descricao", notificacao.ComentarioId);
+            return View(notificacao);
         }
 
-        // GET: AutoridadesAmbientais/Edit/5
+        // GET: Notificacoes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +77,23 @@ namespace GlobalSolution_MVC.Controllers
                 return NotFound();
             }
 
-            var autoridadeAmbiental = await _context.AutoridadesAmbientais.FindAsync(id);
-            if (autoridadeAmbiental == null)
+            var notificacao = await _context.Notificacoes.FindAsync(id);
+            if (notificacao == null)
             {
                 return NotFound();
             }
-            return View(autoridadeAmbiental);
+            ViewData["ComentarioId"] = new SelectList(_context.Comentarios, "ComentarioId", "Descricao", notificacao.ComentarioId);
+            return View(notificacao);
         }
 
-        // POST: AutoridadesAmbientais/Edit/5
+        // POST: Notificacoes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AutoridadeAmbientalId,Nome,Descricao")] AutoridadeAmbiental autoridadeAmbiental)
+        public async Task<IActionResult> Edit(int id, [Bind("NotificacaoId,Descricao,Status,Tipo,ComentarioId")] Notificacao notificacao)
         {
-            if (id != autoridadeAmbiental.AutoridadeAmbientalId)
+            if (id != notificacao.NotificacaoId)
             {
                 return NotFound();
             }
@@ -97,12 +102,12 @@ namespace GlobalSolution_MVC.Controllers
             {
                 try
                 {
-                    _context.Update(autoridadeAmbiental);
+                    _context.Update(notificacao);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AutoridadeAmbientalExists(autoridadeAmbiental.AutoridadeAmbientalId))
+                    if (!NotificacaoExists(notificacao.NotificacaoId))
                     {
                         return NotFound();
                     }
@@ -113,10 +118,11 @@ namespace GlobalSolution_MVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(autoridadeAmbiental);
+            ViewData["ComentarioId"] = new SelectList(_context.Comentarios, "ComentarioId", "Descricao", notificacao.ComentarioId);
+            return View(notificacao);
         }
 
-        // GET: AutoridadesAmbientais/Delete/5
+        // GET: Notificacoes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,34 +130,35 @@ namespace GlobalSolution_MVC.Controllers
                 return NotFound();
             }
 
-            var autoridadeAmbiental = await _context.AutoridadesAmbientais
-                .FirstOrDefaultAsync(m => m.AutoridadeAmbientalId == id);
-            if (autoridadeAmbiental == null)
+            var notificacao = await _context.Notificacoes
+                .Include(n => n.Comentario)
+                .FirstOrDefaultAsync(m => m.NotificacaoId == id);
+            if (notificacao == null)
             {
                 return NotFound();
             }
 
-            return View(autoridadeAmbiental);
+            return View(notificacao);
         }
 
-        // POST: AutoridadesAmbientais/Delete/5
+        // POST: Notificacoes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var autoridadeAmbiental = await _context.AutoridadesAmbientais.FindAsync(id);
-            if (autoridadeAmbiental != null)
+            var notificacao = await _context.Notificacoes.FindAsync(id);
+            if (notificacao != null)
             {
-                _context.AutoridadesAmbientais.Remove(autoridadeAmbiental);
+                _context.Notificacoes.Remove(notificacao);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AutoridadeAmbientalExists(int id)
+        private bool NotificacaoExists(int id)
         {
-            return _context.AutoridadesAmbientais.Any(e => e.AutoridadeAmbientalId == id);
+            return _context.Notificacoes.Any(e => e.NotificacaoId == id);
         }
     }
 }

@@ -54,7 +54,7 @@ namespace GlobalSolution_MVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LocalizacaoId,Pais,Cidade,Estado,Rua,CEP")] Localizacao localizacao)
+        public async Task<IActionResult> Create([Bind("LocalizacaoId,Latitude,Longitude,Descricao")] Localizacao localizacao)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace GlobalSolution_MVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("LocalizacaoId,Pais,Cidade,Estado,Rua,CEP")] Localizacao localizacao)
+        public async Task<IActionResult> Edit(int id, [Bind("LocalizacaoId,Latitude,Longitude,Descricao")] Localizacao localizacao)
         {
             if (id != localizacao.LocalizacaoId)
             {

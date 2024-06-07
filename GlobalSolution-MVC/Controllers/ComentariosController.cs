@@ -22,8 +22,7 @@ namespace GlobalSolution_MVC.Controllers
         // GET: Comentarios
         public async Task<IActionResult> Index()
         {
-            var visionaryBlueDbContext = _context.Comentarios.Include(c => c.Denuncia);
-            return View(await visionaryBlueDbContext.ToListAsync());
+            return View(await _context.Comentarios.ToListAsync());
         }
 
         // GET: Comentarios/Details/5
@@ -35,7 +34,6 @@ namespace GlobalSolution_MVC.Controllers
             }
 
             var comentario = await _context.Comentarios
-                .Include(c => c.Denuncia)
                 .FirstOrDefaultAsync(m => m.ComentarioId == id);
             if (comentario == null)
             {
@@ -48,7 +46,6 @@ namespace GlobalSolution_MVC.Controllers
         // GET: Comentarios/Create
         public IActionResult Create()
         {
-            ViewData["DenunciaId"] = new SelectList(_context.Denuncias, "DenunciaId", "TipoPoluicao");
             return View();
         }
 
@@ -57,7 +54,7 @@ namespace GlobalSolution_MVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ComentarioId,Conteudo,DataHora,DenunciaId")] Comentario comentario)
+        public async Task<IActionResult> Create([Bind("ComentarioId,Descricao,Tipo")] Comentario comentario)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +62,6 @@ namespace GlobalSolution_MVC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DenunciaId"] = new SelectList(_context.Denuncias, "DenunciaId", "TipoPoluicao", comentario.DenunciaId);
             return View(comentario);
         }
 
@@ -82,7 +78,6 @@ namespace GlobalSolution_MVC.Controllers
             {
                 return NotFound();
             }
-            ViewData["DenunciaId"] = new SelectList(_context.Denuncias, "DenunciaId", "TipoPoluicao", comentario.DenunciaId);
             return View(comentario);
         }
 
@@ -91,7 +86,7 @@ namespace GlobalSolution_MVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ComentarioId,Conteudo,DataHora,DenunciaId")] Comentario comentario)
+        public async Task<IActionResult> Edit(int id, [Bind("ComentarioId,Descricao,Tipo")] Comentario comentario)
         {
             if (id != comentario.ComentarioId)
             {
@@ -118,7 +113,6 @@ namespace GlobalSolution_MVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DenunciaId"] = new SelectList(_context.Denuncias, "DenunciaId", "TipoPoluicao", comentario.DenunciaId);
             return View(comentario);
         }
 
@@ -131,7 +125,6 @@ namespace GlobalSolution_MVC.Controllers
             }
 
             var comentario = await _context.Comentarios
-                .Include(c => c.Denuncia)
                 .FirstOrDefaultAsync(m => m.ComentarioId == id);
             if (comentario == null)
             {

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GlobalSolution_MVC.Models
 {
-    [Table("Comentarios")]
+    [Table("tb_comentario")]
     public class Comentario
     {
         [Key]
@@ -11,18 +11,13 @@ namespace GlobalSolution_MVC.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ComentarioId { get; set; }
 
-        [Required(ErrorMessage = "O conteúdo do comentário é obrigatório.")]
+        [Required(ErrorMessage = "A descrição do comentário é obrigatória.")]
         [MaxLength(500)]
-        [Column("Conteudo")]
-        public string Conteudo { get; set; }
+        [Column("ds_comentario")]
+        public string Descricao { get; set; }
 
-        [Required(ErrorMessage = "A data e hora do comentário são obrigatórias.")]
-        [Column("Data_Hora")]
-        public DateTime DataHora { get; set; }
-
-        
-        [ForeignKey("DenunciaId")]
-        public int DenunciaId { get; set; }
-        public Denuncia Denuncia { get; set; }
+        [Required(ErrorMessage = "O tipo do comentário é obrigatório.")]
+        [Column("tp_comentario")]
+        public string Tipo { get; set; }
     }
 }

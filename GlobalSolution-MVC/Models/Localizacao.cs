@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GlobalSolution_MVC.Models
 {
-    [Table("Localizacoes")]
+    [Table("tb_localizacao")]
     public class Localizacao
     {
         [Key]
@@ -11,26 +11,20 @@ namespace GlobalSolution_MVC.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int LocalizacaoId { get; set; }
 
-        [Required(ErrorMessage = "O país é obrigatório.")]
+        [Required(ErrorMessage = "A latitude é obrigatória.")]
         [MaxLength(100)]
-        [Column("Pais")]
-        public string Pais { get; set; }
+        [Column("latitude")]
+        public string Latitude { get; set; }
 
-        [Required(ErrorMessage = "A cidade é obrigatória.")]
+        [Required(ErrorMessage = "A longitude é obrigatória.")]
         [MaxLength(100)]
-        [Column("Cidade")]
-        public string Cidade { get; set; }
-
-        [MaxLength(100)]
-        [Column("Estado")]
-        public string Estado { get; set; }
+        [Column("longitude")]
+        public string Longitude { get; set; }
 
         [MaxLength(100)]
-        [Column("Rua")]
-        public string Rua { get; set; }
+        [Column("ds_localizacao")]
+        public string Descricao { get; set; }
 
-        [MaxLength(20)]
-        [Column("CEP")]
-        public string CEP { get; set; }
+
     }
 }

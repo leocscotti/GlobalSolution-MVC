@@ -14,19 +14,14 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ComentarioId" />
             <div class="form-group">
-                <label asp-for="Conteudo" class="control-label"></label>
-                <input asp-for="Conteudo" class="form-control" />
-                <span asp-validation-for="Conteudo" class="text-danger"></span>
+                <label asp-for="Descricao" class="control-label"></label>
+                <input asp-for="Descricao" class="form-control" />
+                <span asp-validation-for="Descricao" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DataHora" class="control-label"></label>
-                <input asp-for="DataHora" class="form-control" />
-                <span asp-validation-for="DataHora" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DenunciaId" class="control-label"></label>
-                <select asp-for="DenunciaId" class="form-control" asp-items="ViewBag.DenunciaId"></select>
-                <span asp-validation-for="DenunciaId" class="text-danger"></span>
+                <label asp-for="Tipo" class="control-label"></label>
+                <input asp-for="Tipo" class="form-control" />
+                <span asp-validation-for="Tipo" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

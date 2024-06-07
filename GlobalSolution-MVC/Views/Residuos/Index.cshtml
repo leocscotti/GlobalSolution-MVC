@@ -1,4 +1,4 @@
-﻿@model IEnumerable<GlobalSolution_MVC.Models.Comentario>
+﻿@model IEnumerable<GlobalSolution_MVC.Models.Residuo>
 
 @{
     ViewData["Title"] = "Index";
@@ -31,9 +31,9 @@
                 @Html.DisplayFor(modelItem => item.Tipo)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ComentarioId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ComentarioId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ComentarioId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.ResiduoId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ResiduoId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ResiduoId">Delete</a>
             </td>
         </tr>
 }

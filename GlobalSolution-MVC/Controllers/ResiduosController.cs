@@ -10,22 +10,22 @@ using GlobalSolution_MVC.Persistencia;
 
 namespace GlobalSolution_MVC.Controllers
 {
-    public class AutoridadesAmbientaisController : Controller
+    public class ResiduosController : Controller
     {
         private readonly VisionaryBlueDbContext _context;
 
-        public AutoridadesAmbientaisController(VisionaryBlueDbContext context)
+        public ResiduosController(VisionaryBlueDbContext context)
         {
             _context = context;
         }
 
-        // GET: AutoridadesAmbientais
+        // GET: Residuos
         public async Task<IActionResult> Index()
         {
-            return View(await _context.AutoridadesAmbientais.ToListAsync());
+            return View(await _context.Residuos.ToListAsync());
         }
 
-        // GET: AutoridadesAmbientais/Details/5
+        // GET: Residuos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace GlobalSolution_MVC.Controllers
                 return NotFound();
             }
 
-            var autoridadeAmbiental = await _context.AutoridadesAmbientais
-                .FirstOrDefaultAsync(m => m.AutoridadeAmbientalId == id);
-            if (autoridadeAmbiental == null)
+            var residuo = await _context.Residuos
+                .FirstOrDefaultAsync(m => m.ResiduoId == id);
+            if (residuo == null)
             {
                 return NotFound();
             }
 
-            return View(autoridadeAmbiental);
+            return View(residuo);
         }
 
-        // GET: AutoridadesAmbientais/Create
+        // GET: Residuos/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: AutoridadesAmbientais/Create
+        // POST: Residuos/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AutoridadeAmbientalId,Nome,Descricao")] AutoridadeAmbiental autoridadeAmbiental)
+        public async Task<IActionResult> Create([Bind("ResiduoId,Descricao,Tipo")] Residuo residuo)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(autoridadeAmbiental);
+                _context.Add(residuo);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(autoridadeAmbiental);
+            return View(residuo);
         }
 
-        // GET: AutoridadesAmbientais/Edit/5
+        // GET: Residuos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace GlobalSolution_MVC.Controllers
                 return NotFound();
             }
 
-            var autoridadeAmbiental = await _context.AutoridadesAmbientais.FindAsync(id);
-            if (autoridadeAmbiental == null)
+            var residuo = await _context.Residuos.FindAsync(id);
+            if (residuo == null)
             {
                 return NotFound();
             }
-            return View(autoridadeAmbiental);
+            return View(residuo);
         }
 
-        // POST: AutoridadesAmbientais/Edit/5
+        // POST: Residuos/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AutoridadeAmbientalId,Nome,Descricao")] AutoridadeAmbiental autoridadeAmbiental)
+        public async Task<IActionResult> Edit(int id, [Bind("ResiduoId,Descricao,Tipo")] Residuo residuo)
         {
-            if (id != autoridadeAmbiental.AutoridadeAmbientalId)
+            if (id != residuo.ResiduoId)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace GlobalSolution_MVC.Controllers
             {
                 try
                 {
-                    _context.Update(autoridadeAmbiental);
+                    _context.Update(residuo);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AutoridadeAmbientalExists(autoridadeAmbiental.AutoridadeAmbientalId))
+                    if (!ResiduoExists(residuo.ResiduoId))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace GlobalSolution_MVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(autoridadeAmbiental);
+            return View(residuo);
         }
 
-        // GET: AutoridadesAmbientais/Delete/5
+        // GET: Residuos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,34 +124,34 @@ namespace GlobalSolution_MVC.Controllers
                 return NotFound();
             }
 
-            var autoridadeAmbiental = await _context.AutoridadesAmbientais
-                .FirstOrDefaultAsync(m => m.AutoridadeAmbientalId == id);
-            if (autoridadeAmbiental == null)
+            var residuo = await _context.Residuos
+                .FirstOrDefaultAsync(m => m.ResiduoId == id);
+            if (residuo == null)
             {
                 return NotFound();
             }
 
-            return View(autoridadeAmbiental);
+            return View(residuo);
         }
 
-        // POST: AutoridadesAmbientais/Delete/5
+        // POST: Residuos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var autoridadeAmbiental = await _context.AutoridadesAmbientais.FindAsync(id);
-            if (autoridadeAmbiental != null)
+            var residuo = await _context.Residuos.FindAsync(id);
+            if (residuo != null)
             {
-                _context.AutoridadesAmbientais.Remove(autoridadeAmbiental);
+                _context.Residuos.Remove(residuo);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AutoridadeAmbientalExists(int id)
+        private bool ResiduoExists(int id)
         {
-            return _context.AutoridadesAmbientais.Any(e => e.AutoridadeAmbientalId == id);
+            return _context.Residuos.Any(e => e.ResiduoId == id);
         }
     }
 }

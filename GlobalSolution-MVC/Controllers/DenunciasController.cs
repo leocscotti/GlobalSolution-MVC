@@ -22,7 +22,7 @@ namespace GlobalSolution_MVC.Controllers
         // GET: Denuncias
         public async Task<IActionResult> Index()
         {
-            var visionaryBlueDbContext = _context.Denuncias.Include(d => d.Localizacao).Include(d => d.Usuario);
+            var visionaryBlueDbContext = _context.Denuncias.Include(d => d.AutoridadeAmbiental).Include(d => d.Localizacao).Include(d => d.Notificacao).Include(d => d.Usuario);
             return View(await visionaryBlueDbContext.ToListAsync());
         }
 
@@ -35,7 +35,9 @@ namespace GlobalSolution_MVC.Controllers
             }
 
             var denuncia = await _context.Denuncias
+                .Include(d => d.AutoridadeAmbiental)
                 .Include(d => d.Localizacao)
+                .Include(d => d.Notificacao)
                 .Include(d => d.Usuario)
                 .FirstOrDefaultAsync(m => m.DenunciaId == id);
             if (denuncia == null)
@@ -49,7 +51,9 @@ namespace GlobalSolution_MVC.Controllers
         // GET: Denuncias/Create
         public IActionResult Create()
         {
-            ViewData["LocalizacaoId"] = new SelectList(_context.Locais, "LocalizacaoId", "CEP");
+            ViewData["AutoridadeAmbientalId"] = new SelectList(_context.AutoridadesAmbientais, "AutoridadeAmbientalId", "Nome");
+            ViewData["LocalizacaoId"] = new SelectList(_context.Locais, "LocalizacaoId", "Latitude");
+            ViewData["NotificacaoId"] = new SelectList(_context.Notificacoes, "NotificacaoId", "Descricao");
             ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "UsuarioId", "Email");
             return View();
         }
@@ -59,7 +63,7 @@ namespace GlobalSolution_MVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DenunciaId,TipoPoluicao,DataHora,Descricao,Status,UsuarioId,LocalizacaoId")] Denuncia denuncia)
+        public async Task<IActionResult> Create([Bind("DenunciaId,DataHora,Descricao,Status,UsuarioId,LocalizacaoId,AutoridadeAmbientalId,NotificacaoId")] Denuncia denuncia)
         {
             if (ModelState.IsValid)
             {
@@ -67,7 +71,9 @@ namespace GlobalSolution_MVC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LocalizacaoId"] = new SelectList(_context.Locais, "LocalizacaoId", "CEP", denuncia.LocalizacaoId);
+            ViewData["AutoridadeAmbientalId"] = new SelectList(_context.AutoridadesAmbientais, "AutoridadeAmbientalId", "Nome", denuncia.AutoridadeAmbientalId);
+            ViewData["LocalizacaoId"] = new SelectList(_context.Locais, "LocalizacaoId", "Latitude", denuncia.LocalizacaoId);
+            ViewData["NotificacaoId"] = new SelectList(_context.Notificacoes, "NotificacaoId", "Descricao", denuncia.NotificacaoId);
             ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "UsuarioId", "Email", denuncia.UsuarioId);
             return View(denuncia);
         }
@@ -85,7 +91,9 @@ namespace GlobalSolution_MVC.Controllers
             {
                 return NotFound();
             }
-            ViewData["LocalizacaoId"] = new SelectList(_context.Locais, "LocalizacaoId", "CEP", denuncia.LocalizacaoId);
+            ViewData["AutoridadeAmbientalId"] = new SelectList(_context.AutoridadesAmbientais, "AutoridadeAmbientalId", "Nome", denuncia.AutoridadeAmbientalId);
+            ViewData["LocalizacaoId"] = new SelectList(_context.Locais, "LocalizacaoId", "Latitude", denuncia.LocalizacaoId);
+            ViewData["NotificacaoId"] = new SelectList(_context.Notificacoes, "NotificacaoId", "Descricao", denuncia.NotificacaoId);
             ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "UsuarioId", "Email", denuncia.UsuarioId);
             return View(denuncia);
         }
@@ -95,7 +103,7 @@ namespace GlobalSolution_MVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DenunciaId,TipoPoluicao,DataHora,Descricao,Status,UsuarioId,LocalizacaoId")] Denuncia denuncia)
+        public async Task<IActionResult> Edit(int id, [Bind("DenunciaId,DataHora,Descricao,Status,UsuarioId,LocalizacaoId,AutoridadeAmbientalId,NotificacaoId")] Denuncia denuncia)
         {
             if (id != denuncia.DenunciaId)
             {
@@ -122,7 +130,9 @@ namespace GlobalSolution_MVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LocalizacaoId"] = new SelectList(_context.Locais, "LocalizacaoId", "CEP", denuncia.LocalizacaoId);
+            ViewData["AutoridadeAmbientalId"] = new SelectList(_context.AutoridadesAmbientais, "AutoridadeAmbientalId", "Nome", denuncia.AutoridadeAmbientalId);
+            ViewData["LocalizacaoId"] = new SelectList(_context.Locais, "LocalizacaoId", "Latitude", denuncia.LocalizacaoId);
+            ViewData["NotificacaoId"] = new SelectList(_context.Notificacoes, "NotificacaoId", "Descricao", denuncia.NotificacaoId);
             ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "UsuarioId", "Email", denuncia.UsuarioId);
             return View(denuncia);
         }
@@ -136,7 +146,9 @@ namespace GlobalSolution_MVC.Controllers
             }
 
             var denuncia = await _context.Denuncias
+                .Include(d => d.AutoridadeAmbiental)
                 .Include(d => d.Localizacao)
+                .Include(d => d.Notificacao)
                 .Include(d => d.Usuario)
                 .FirstOrDefaultAsync(m => m.DenunciaId == id);
             if (denuncia == null)

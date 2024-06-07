@@ -13,9 +13,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TipoPoluicao)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.DataHora)
             </th>
             <th>
@@ -30,15 +27,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.Localizacao)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AutoridadeAmbiental)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Notificacao)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TipoPoluicao)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DataHora)
             </td>
@@ -52,7 +52,13 @@
                 @Html.DisplayFor(modelItem => item.Usuario.Email)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Localizacao.CEP)
+                @Html.DisplayFor(modelItem => item.Localizacao.Latitude)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AutoridadeAmbiental.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Notificacao.Descricao)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.DenunciaId">Edit</a> |

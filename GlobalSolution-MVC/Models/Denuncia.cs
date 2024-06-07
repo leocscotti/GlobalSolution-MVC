@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GlobalSolution_MVC.Models
 {
-    [Table("Denuncias")]
+    [Table("tb_denuncia")]
     public class Denuncia
     {
         [Key]
@@ -11,34 +11,34 @@ namespace GlobalSolution_MVC.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int DenunciaId { get; set; }
 
-        [Required(ErrorMessage = "O tipo de poluição é obrigatório.")]
-        [MaxLength(50)]
-        [Column("Tipo_Poluicao")]
-        public string TipoPoluicao { get; set; } 
-
         [Required(ErrorMessage = "A data e hora da denúncia são obrigatórias.")]
-        [Column("Data_Hora")]
+        [Column("data_ocorrencia")]
         public DateTime DataHora { get; set; }
 
         [MaxLength(500)]
-        [Column("Descricao")]
+        [Column("ds_denuncia")]
         public string Descricao { get; set; }
 
-        [Column("Status")]
+        [MaxLength(1)]
+        [Column("st_denuncia")]
         public string Status { get; set; }
 
-        [ForeignKey("UsuarioId")]
         public int UsuarioId { get; set; }
-        public Usuario Usuario { get; set; }
-        
-        [ForeignKey("LocalizacaoId")]
-        public int LocalizacaoId { get; set; }
-        public Localizacao Localizacao { get; set; }
+        public Usuario? Usuario { get; set; }
 
+        public int LocalizacaoId { get; set; }
+        public Localizacao? Localizacao { get; set; }
+
+        public int AutoridadeAmbientalId { get; set; }
+        public AutoridadeAmbiental? AutoridadeAmbiental { get; set; }
+
+        public int NotificacaoId { get; set; }
+        public Notificacao? Notificacao { get; set; }
 
         public ICollection<Comentario> Comentarios { get; set; }
 
         // Relacionamento N..N com autoridades ambientais responsáveis pela análise
         public ICollection<AutoridadeAmbientalDenuncia> Autoridades { get; set; }
     }
+
 }

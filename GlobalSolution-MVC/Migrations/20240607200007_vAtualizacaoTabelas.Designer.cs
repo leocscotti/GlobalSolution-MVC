@@ -12,8 +12,8 @@ using Oracle.EntityFrameworkCore.Metadata;
 namespace GlobalSolution_MVC.Migrations
 {
     [DbContext(typeof(VisionaryBlueDbContext))]
-    [Migration("20240603172652_v0306")]
-    partial class v0306
+    [Migration("20240607200007_vAtualizacaoTabelas")]
+    partial class vAtualizacaoTabelas
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,28 +27,28 @@ namespace GlobalSolution_MVC.Migrations
 
             modelBuilder.Entity("GlobalSolution_MVC.Models.AutoridadeAmbiental", b =>
                 {
-                    b.Property<int>("AutoridadeId")
+                    b.Property<int>("AutoridadeAmbientalId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("NUMBER(10)")
                         .HasColumnName("ID_Autoridade");
 
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AutoridadeId"));
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AutoridadeAmbientalId"));
 
-                    b.Property<string>("Email")
+                    b.Property<string>("Descricao")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("NVARCHAR2(100)")
-                        .HasColumnName("Email");
+                        .HasColumnName("ds_autoridade_ambiental");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("NVARCHAR2(100)")
-                        .HasColumnName("Nome");
+                        .HasColumnName("nm_autoridade_ambiental");
 
-                    b.HasKey("AutoridadeId");
+                    b.HasKey("AutoridadeAmbientalId");
 
-                    b.ToTable("AutoridadesAmbientais");
+                    b.ToTable("tb_autoridade_ambiental");
                 });
 
             modelBuilder.Entity("GlobalSolution_MVC.Models.AutoridadeAmbientalDenuncia", b =>
@@ -60,7 +60,7 @@ namespace GlobalSolution_MVC.Migrations
 
                     OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AutoridadeDenunciaId"));
 
-                    b.Property<int>("AutoridadeId")
+                    b.Property<int>("AutoridadeAmbientalId")
                         .HasColumnType("NUMBER(10)");
 
                     b.Property<int>("DenunciaId")
@@ -68,11 +68,11 @@ namespace GlobalSolution_MVC.Migrations
 
                     b.HasKey("AutoridadeDenunciaId");
 
-                    b.HasIndex("AutoridadeId");
+                    b.HasIndex("AutoridadeAmbientalId");
 
                     b.HasIndex("DenunciaId");
 
-                    b.ToTable("AutoridadeAmbientalDenuncia");
+                    b.ToTable("tb_autoridade_ambiental_denuncia");
                 });
 
             modelBuilder.Entity("GlobalSolution_MVC.Models.Comentario", b =>
@@ -84,24 +84,25 @@ namespace GlobalSolution_MVC.Migrations
 
                     OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ComentarioId"));
 
-                    b.Property<string>("Conteudo")
+                    b.Property<int?>("DenunciaId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<string>("Descricao")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("NVARCHAR2(500)")
-                        .HasColumnName("Conteudo");
+                        .HasColumnName("ds_comentario");
 
-                    b.Property<DateTime>("DataHora")
-                        .HasColumnType("TIMESTAMP(7)")
-                        .HasColumnName("Data_Hora");
-
-                    b.Property<int>("DenunciaId")
-                        .HasColumnType("NUMBER(10)");
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(2000)")
+                        .HasColumnName("tp_comentario");
 
                     b.HasKey("ComentarioId");
 
                     b.HasIndex("DenunciaId");
 
-                    b.ToTable("Comentarios");
+                    b.ToTable("tb_comentario");
                 });
 
             modelBuilder.Entity("GlobalSolution_MVC.Models.Denuncia", b =>
@@ -113,40 +114,45 @@ namespace GlobalSolution_MVC.Migrations
 
                     OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DenunciaId"));
 
+                    b.Property<int>("AutoridadeAmbientalId")
+                        .HasColumnType("NUMBER(10)");
+
                     b.Property<DateTime>("DataHora")
                         .HasColumnType("TIMESTAMP(7)")
-                        .HasColumnName("Data_Hora");
+                        .HasColumnName("data_ocorrencia");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("NVARCHAR2(500)")
-                        .HasColumnName("Descricao");
+                        .HasColumnName("ds_denuncia");
 
                     b.Property<int>("LocalizacaoId")
                         .HasColumnType("NUMBER(10)");
 
+                    b.Property<int>("NotificacaoId")
+                        .HasColumnType("NUMBER(10)");
+
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR2(2000)")
-                        .HasColumnName("Status");
-
-                    b.Property<string>("TipoPoluicao")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)")
-                        .HasColumnName("Tipo_Poluicao");
+                        .HasMaxLength(1)
+                        .HasColumnType("NVARCHAR2(1)")
+                        .HasColumnName("st_denuncia");
 
                     b.Property<int>("UsuarioId")
                         .HasColumnType("NUMBER(10)");
 
                     b.HasKey("DenunciaId");
 
+                    b.HasIndex("AutoridadeAmbientalId");
+
                     b.HasIndex("LocalizacaoId");
+
+                    b.HasIndex("NotificacaoId");
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Denuncias");
+                    b.ToTable("tb_denuncia");
                 });
 
             modelBuilder.Entity("GlobalSolution_MVC.Models.Localizacao", b =>
@@ -158,39 +164,88 @@ namespace GlobalSolution_MVC.Migrations
 
                     OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LocalizacaoId"));
 
-                    b.Property<string>("CEP")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)")
-                        .HasColumnName("CEP");
-
-                    b.Property<string>("Cidade")
+                    b.Property<string>("Descricao")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("NVARCHAR2(100)")
-                        .HasColumnName("Cidade");
+                        .HasColumnName("ds_localizacao");
 
-                    b.Property<string>("Estado")
+                    b.Property<string>("Latitude")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("NVARCHAR2(100)")
-                        .HasColumnName("Estado");
+                        .HasColumnName("latitude");
 
-                    b.Property<string>("Pais")
+                    b.Property<string>("Longitude")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("NVARCHAR2(100)")
-                        .HasColumnName("Pais");
-
-                    b.Property<string>("Rua")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR2(100)")
-                        .HasColumnName("Rua");
+                        .HasColumnName("longitude");
 
                     b.HasKey("LocalizacaoId");
 
-                    b.ToTable("Localizacoes");
+                    b.ToTable("tb_localizacao");
+                });
+
+            modelBuilder.Entity("GlobalSolution_MVC.Models.Notificacao", b =>
+                {
+                    b.Property<int>("NotificacaoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)")
+                        .HasColumnName("ID_Notificacao");
+
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotificacaoId"));
+
+                    b.Property<int>("ComentarioId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("NVARCHAR2(500)")
+                        .HasColumnName("ds_comentario");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(1)
+                        .HasColumnType("NVARCHAR2(1)")
+                        .HasColumnName("st_comentario");
+
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(2000)")
+                        .HasColumnName("tp_comentario");
+
+                    b.HasKey("NotificacaoId");
+
+                    b.HasIndex("ComentarioId");
+
+                    b.ToTable("tb_notificacao");
+                });
+
+            modelBuilder.Entity("GlobalSolution_MVC.Models.Residuo", b =>
+                {
+                    b.Property<int>("ResiduoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)")
+                        .HasColumnName("ID_Residuo");
+
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ResiduoId"));
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("NVARCHAR2(500)")
+                        .HasColumnName("ds_residuo");
+
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(2000)")
+                        .HasColumnName("tp_residuo");
+
+                    b.HasKey("ResiduoId");
+
+                    b.ToTable("tb_residuo");
                 });
 
             modelBuilder.Entity("GlobalSolution_MVC.Models.Usuario", b =>
@@ -206,24 +261,24 @@ namespace GlobalSolution_MVC.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("NVARCHAR2(100)")
-                        .HasColumnName("Email");
+                        .HasColumnName("email");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("NVARCHAR2(100)")
-                        .HasColumnName("Nome");
+                        .HasColumnName("nm_usuario");
 
                     b.HasKey("UsuarioId");
 
-                    b.ToTable("Usuarios");
+                    b.ToTable("tb_usuario");
                 });
 
             modelBuilder.Entity("GlobalSolution_MVC.Models.AutoridadeAmbientalDenuncia", b =>
                 {
-                    b.HasOne("GlobalSolution_MVC.Models.AutoridadeAmbiental", "Autoridade")
-                        .WithMany("DenunciasParaAnalise")
-                        .HasForeignKey("AutoridadeId")
+                    b.HasOne("GlobalSolution_MVC.Models.AutoridadeAmbiental", "AutoridadeAmbiental")
+                        .WithMany("Denuncias")
+                        .HasForeignKey("AutoridadeAmbientalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -233,27 +288,35 @@ namespace GlobalSolution_MVC.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Autoridade");
+                    b.Navigation("AutoridadeAmbiental");
 
                     b.Navigation("Denuncia");
                 });
 
             modelBuilder.Entity("GlobalSolution_MVC.Models.Comentario", b =>
                 {
-                    b.HasOne("GlobalSolution_MVC.Models.Denuncia", "Denuncia")
+                    b.HasOne("GlobalSolution_MVC.Models.Denuncia", null)
                         .WithMany("Comentarios")
-                        .HasForeignKey("DenunciaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Denuncia");
+                        .HasForeignKey("DenunciaId");
                 });
 
             modelBuilder.Entity("GlobalSolution_MVC.Models.Denuncia", b =>
                 {
+                    b.HasOne("GlobalSolution_MVC.Models.AutoridadeAmbiental", "AutoridadeAmbiental")
+                        .WithMany()
+                        .HasForeignKey("AutoridadeAmbientalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("GlobalSolution_MVC.Models.Localizacao", "Localizacao")
                         .WithMany()
                         .HasForeignKey("LocalizacaoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GlobalSolution_MVC.Models.Notificacao", "Notificacao")
+                        .WithMany()
+                        .HasForeignKey("NotificacaoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -263,14 +326,29 @@ namespace GlobalSolution_MVC.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("AutoridadeAmbiental");
+
                     b.Navigation("Localizacao");
+
+                    b.Navigation("Notificacao");
 
                     b.Navigation("Usuario");
                 });
 
+            modelBuilder.Entity("GlobalSolution_MVC.Models.Notificacao", b =>
+                {
+                    b.HasOne("GlobalSolution_MVC.Models.Comentario", "Comentario")
+                        .WithMany()
+                        .HasForeignKey("ComentarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Comentario");
+                });
+
             modelBuilder.Entity("GlobalSolution_MVC.Models.AutoridadeAmbiental", b =>
                 {
-                    b.Navigation("DenunciasParaAnalise");
+                    b.Navigation("Denuncias");
                 });
 
             modelBuilder.Entity("GlobalSolution_MVC.Models.Denuncia", b =>

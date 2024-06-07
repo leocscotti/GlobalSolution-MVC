@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GlobalSolution_MVC.Models
 {
-    [Table("Usuarios")]
+    [Table("tb_usuario")]
     public class Usuario
     {
         [Key]
@@ -13,15 +13,14 @@ namespace GlobalSolution_MVC.Models
 
         [Required(ErrorMessage = "O nome do usuário é obrigatório.")]
         [MaxLength(100)]
-        [Column("Nome")]
+        [Column("nm_usuario")]
         public string Nome { get; set; }
 
         [Required(ErrorMessage = "O email do usuário é obrigatório.")]
         [EmailAddress(ErrorMessage = "O email inserido não é válido.")]
         [MaxLength(100)]
-        [Column("Email")]
+        [Column("email")]
         public string Email { get; set; }
 
-      
     }
 }

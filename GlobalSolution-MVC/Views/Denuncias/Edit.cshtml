@@ -14,11 +14,6 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="DenunciaId" />
             <div class="form-group">
-                <label asp-for="TipoPoluicao" class="control-label"></label>
-                <input asp-for="TipoPoluicao" class="form-control" />
-                <span asp-validation-for="TipoPoluicao" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="DataHora" class="control-label"></label>
                 <input asp-for="DataHora" class="form-control" />
                 <span asp-validation-for="DataHora" class="text-danger"></span>
@@ -42,6 +37,16 @@
                 <label asp-for="LocalizacaoId" class="control-label"></label>
                 <select asp-for="LocalizacaoId" class="form-control" asp-items="ViewBag.LocalizacaoId"></select>
                 <span asp-validation-for="LocalizacaoId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AutoridadeAmbientalId" class="control-label"></label>
+                <select asp-for="AutoridadeAmbientalId" class="form-control" asp-items="ViewBag.AutoridadeAmbientalId"></select>
+                <span asp-validation-for="AutoridadeAmbientalId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NotificacaoId" class="control-label"></label>
+                <select asp-for="NotificacaoId" class="form-control" asp-items="ViewBag.NotificacaoId"></select>
+                <span asp-validation-for="NotificacaoId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
